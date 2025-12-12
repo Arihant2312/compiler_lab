@@ -1,0 +1,44 @@
+%{
+#include <stdio.h>
+
+FILE *yyin, *yyout;
+%}
+
+%%
+.|\n  { fputc(yytext[0], yyout); }
+%%
+
+int main(int argc, char *argv[]) {
+    if (argc != 3) {
+
+        fprintf(stderr, "Usage: %s <inputfile> <outputfile>\n", argv[0]);
+        return 1;
+    }
+
+
+    yyin = fopen(argv[1], "r");
+    if (!yyin) {
+        perror("Cannot open input file");
+        return 1;
+    }
+
+
+    yyout = fopen(argv[2], "w");
+    if (!yyout) {
+        perror("Cannot open output file");
+        fclose(yyin);
+        return 1;
+    }
+
+    // Call the Lex scanner to process the input and output the content
+    yylex();  // This will read from yyin and write to yyout
+
+    // Close both input and output files
+    fclose(yyin);
+    fclose(yyout);
+
+    return 0;
+}
+
+
+create input and out put file in input add a text line afeter running -rogram it shpudl apper in pitpiut file 
