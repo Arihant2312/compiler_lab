@@ -1,0 +1,28 @@
+%{
+#include<stdio.h>
+int plus=0;
+int minus=0;
+int modulo=0;
+int power=0;
+int mul=0;
+%}
+%%
+"+" {plus++;}
+"-" {minus++;}
+"%" {modulo++;}
+"*" {mul++;}
+"^" {power++;}
+%%
+int main(){
+printf("enter a expression: ");
+yylex();
+printf(" no of '+' operator:%d",plus);
+printf("\n no of '-' operator:%d\n",minus);
+printf("\n no of '%%' operator:%d\n",modulo);
+printf("\n no of '^' operator:%d\n",power);
+printf("\n no of '*`' operator:%d\n",mul);
+
+
+return 0;
+}
+
