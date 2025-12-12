@@ -1,0 +1,45 @@
+%{
+#include "y.tab.h"
+#include <stdio.h>
+%}
+
+%%
+A    { return A; }
+B    { return B; }
+\n   { return '\n'; }
+[ \t]+    ;  /* Ignore whitespace */
+.   { printf("invalid character: %c\n", yytext[0]); }
+%%
+
+int yywrap() {
+    return 1;
+}
+
+//yacc
+%{
+#include <stdio.h>
+#include <stdlib.h>
+int yyerror(char *s);
+%}
+%token A B
+%%
+start: s '\n' { printf("valid pattern\n"); }
+     ;
+
+s: A B
+  | A s B
+  ;
+
+%%
+
+int main() {
+    printf("Enter the expression of A and B (end with a newline):\n");
+    yyparse();
+    return 0;
+}
+
+int yyerror(char *s) {
+    printf("invalid pattern\n");
+    exit(1);
+}
+
