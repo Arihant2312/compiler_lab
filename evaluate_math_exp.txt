@@ -1,0 +1,51 @@
+%{
+#include "y.tab.h"
+%}
+%%
+[0-9]+    { yylval=atoi(yytext) ;  return NUMBER;}
+[ \t]       ;
+\n         return EOL;
+.           return yytext[0];
+%%
+int yywrap(){
+return 1;
+}
+~  
+
+//.y
+#include<stdlib.h>
+int yylex();
+void yyerror(char *s);
+%}
+
+%token NUMBER
+%token EOL
+%left '+' '-'
+%left '*' '/'
+%left UMINUS
+
+%%
+start:
+    expr EOL  { printf("result is %d\n", $1); }
+;
+
+expr:
+      expr '+' expr { $$ = $1 + $3; }
+    | expr '-' expr { $$ = $1 - $3; }
+    | expr '*' expr { $$ = $1 * $3; }
+    | expr '/' expr { $$ = $1 / $3; }
+    | '(' expr ')'  { $$ = $2; }
+    | '-' expr %prec UMINUS { $$ = -$2; }
+    | NUMBER { $$ = $1; }
+;
+%%
+
+void yyerror(char *s){
+    printf("error: %s\n", s);
+}
+
+int main(){
+    printf("enter the expression to evaluate\n");
+    yyparse();
+    return 0;
+}
