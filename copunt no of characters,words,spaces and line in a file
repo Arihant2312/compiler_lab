@@ -1,4 +1,4 @@
-//from a file 
+//from a file ,
 %{
 int chars = 0;
 int words = 0;
