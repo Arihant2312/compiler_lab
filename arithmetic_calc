@@ -1,0 +1,59 @@
+%{
+#include "y.tab.h"
+%}
+%%
+[0-9]+   { yylval=atoi(yytext);
+                    return NUM;}
+[+\-*/\(\)]   { return yytext[0]; }
+\n   { return '\n';}
+[ \t]+    ;
+%%
+int yywrap(){
+return 1;
+}
+
+//yacc
+*/
+%{
+#include <stdio.h>
+#include <stdlib.h>
+int yyerror(char *s);
+%}
+
+//%union { int val; }
+
+%token NUM
+%left '+' '-'
+%left '*' '/'
+
+%%
+line: expr '\n'   { printf("result is: %d\n", $1); }
+    ;
+
+expr:
+      expr '+' expr   { $$ = $1 + $3; }
+    | expr '-' expr   { $$ = $1 - $3; }
+    | expr '*' expr   { $$ = $1 * $3; }
+    | expr '/' expr   { $$ = $1 / $3; }
+ | '(' expr ')'      { $$ = $2; }
+    | NUM             { $$ = $1; }
+    ;
+%%
+int main() {
+    printf("enter the mathematical expression to calculate:\n");
+    yyparse();
+    return 0;
+}
+
+int yyerror(char *s) {
+    printf("invalid character\n");
+    return 0;
+}
+
+
+~                                                                                                               
+~                                                                                                               
+~                                                                                                               
+~                                                                                                               
+~                                                                                                               
+~                
