@@ -1,0 +1,28 @@
+%{
+#include<stdio.h>
+#include<string.h>
+int comp=0;
+%}
+%%
+(if|else|because|althogh|between|or|and)  { comp=1; }
+[a-zA-Z_] { /*ignore*/ }
+[ \t\n]   { /*ignore*/ }
+%%
+int main(){
+printf("enter a statement: ");
+yylex();
+if(comp==1){
+printf("statemtnt is complex\n");
+}
+else{
+printf("statement is simple\n");
+}
+return 0;
+}
+int yywrap() {
+return 1;
+}
+~                                                                                                                                               
+~                                                                                                                                               
+~                                                                                                                                               
+~   
