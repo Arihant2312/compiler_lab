@@ -1,0 +1,67 @@
+//from a file 
+%{
+int chars = 0;
+int words = 0;
+int spaces = 0;
+int lines = 0;
+%}
+
+%%
+" "            { spaces++; chars++; }        // space
+"\n"           { lines++; chars++; }         // newline
+"\t"           { chars++; }                  // tab counts as char
+[A-Za-z0-9]+   { words++; chars += yyleng; } // words
+.              { chars++; }                  // any other character
+%%
+
+int main(int argc, char *argv[])
+{
+    if (argc > 1) {
+        FILE *fp = fopen(argv[1], "r");
+        if (!fp) {
+            printf("Cannot open file %s\n", argv[1]);
+            return 1;
+        }
+        yyin = fp;   // Set input file for lexer
+    }
+
+    yylex();
+
+    printf("Number of lines     : %d\n", lines);
+    printf("Number of words     : %d\n", words);
+    printf("Number of spaces    : %d\n", spaces);
+    printf("Number of characters: %d\n", chars);
+
+    return 0;
+}
+
+//from input of user
+%{
+#include <stdio.h>
+int chars = 0, words = 0, spaces = 0, lines = 0;
+%}
+
+%%
+[ \t]+        { spaces += yyleng; }        // Match spaces or tabs
+\n            { lines++; }                 // Match newline (line breaks)
+[a-zA-Z]+      { words++; chars += yyleng; } // Match words (non-whitespace)
+.             { chars++; }                 // Match any other character (e.g., punctuation)
+
+%%
+
+int main() {
+    printf("Enter the text:\n");
+    yylex();  // Start Lex processing
+
+    printf("Number of characters: %d\n", chars);
+    printf("Number of words: %d\n", words);
+    printf("Number of spaces: %d\n", spaces);
+    printf("Number of lines: %d\n", lines);
+
+    return 0;
+}
+int yywrap(){return 1;}
+~                                                                                                                                               
+~                                                                                                                                               
+~                                                                                                                                               
+~                
