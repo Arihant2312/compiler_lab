@@ -1,0 +1,27 @@
+
+%{
+#include<stdio.h>
+int vowels=0;
+int cons=0;
+int digit=0;
+int special=0;
+%}
+%%
+[AEIOUaeiou] {vowels++;}
+[a-zA-Z]  {cons++;}
+[0-9]   {digit++;}
+[!@#$%^&`~] {special++;}
+%%
+int main(){
+printf("enter a string\n");
+yylex();
+printf("\nno of vowels:%d",vowels);
+printf("\nno of cons:%d",cons);
+printf("\nno of digits:%d",digit);
+printf("\n no of special :%d",special);
+return 0;
+}
+
+
+
+
