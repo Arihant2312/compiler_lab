@@ -1,17 +1,17 @@
-//
 %{
 #include "y.tab.h"
 %}
 
 %%
-[0-9]+          { return NUMBER; }
-[ \t\r]+        ;                 /* ignore spaces */
-\n              { return EOL; }   /* newline ends expression */
-.               { return yytext[0]; }
+[0-9]+        { return NUMBER; }
+[ \t\r]+     ;                 /* ignore spaces */
+\n            { return '\n'; }  /* return newline character */
+.             { return yytext[0]; }
 %%
 
-int yywrap() { return 1; }
-//yacc
+int yywrap() {
+    return 1;
+}
 %{
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,44 +21,35 @@ int yylex();
 %}
 
 %token NUMBER
-%token EOL
-
 %left '+' '-'
 %left '*' '/'
 %left UMINUS
 
 %%
-
-/* parser resets after every newline */
 start:
-        expr EOL        { printf("VALID expression\n"); }
-      | EOL             { printf("EMPTY expression\n"); }
-;
+      expr '\n'   { printf("VALID expression\n"); }
+    | '\n'        { printf("EMPTY expression\n"); }
+    ;
 
 expr:
-        expr '+' expr          { }
-      | expr '-' expr          { }
-      | expr '*' expr          { }
-      | expr '/' expr          { }
-      | '(' expr ')'           { }
-      | '-' expr %prec UMINUS  { }
-      | NUMBER                 { }
-;
-
+      expr '+' expr
+    | expr '-' expr
+    | expr '*' expr
+    | expr '/' expr
+    | '(' expr ')'
+    | '-' expr %prec UMINUS
+    | NUMBER
+    ;
 %%
 
-void yyerror(const char *s)
-{
+void yyerror(const char *s) {
     printf("INVALID expression\n");
 }
 
-int main()
-{
+int main() {
     printf("Enter expressions (one per line):\n");
-
     while (1) {
-        yyparse();   // parses one line, stops at \n
+        yyparse();   /* parses one line, stops at '\n' */
     }
-
     return 0;
 }
