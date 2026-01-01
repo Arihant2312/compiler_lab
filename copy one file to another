@@ -42,3 +42,38 @@ int main(int argc, char *argv[]) {
 
 
 create input and out put file in input add a text line afeter running -rogram it shpudl apper in pitpiut file 
+✅ Simplest Lex Program (File → File)
+📄 copy.l
+%{
+#include <stdio.h>
+%}
+
+%%
+.|\n   { printf("%c", yytext[0]); }
+%%
+
+
+✔ Lex only
+✔ No arguments
+✔ No yyin, yyout
+✔ Easy to understand
+
+1️⃣ Create Input File
+📄 input.txt
+Lex program is simple.
+This content must appear in output.
+
+2️⃣ Run the Program
+Step 1: Generate C file
+lex copy.l
+
+Step 2: Compile
+gcc lex.yy.c -o copy
+
+Step 3: Execute (redirect input/output)
+copy < input.txt > output.txt
+
+3️⃣ Output File
+📄 output.txt
+Lex program is simple.
+This content must appear in output.
