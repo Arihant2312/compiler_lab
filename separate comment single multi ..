@@ -1,17 +1,21 @@
-//as
 %{
-#include<stdio.h>
+#include <stdio.h>
 %}
 
 %%
-"//".*  {printf("Single line comment : %s\n",yytext);}
-"/*"([^*]|\*+[^*/])*\*+"/" {printf("Multi line comment : %s\n",yytext);}
-.|\n
+"//".*                  { printf("Single line comment: %s\n", yytext); }
+
+"/*"([^*]|\n)*"*/"      { printf("Multi line comment: %s\n", yytext); }
+
+.|\n                    ;   /* ignore other characters */
 %%
 
-int main(){
-printf("Enter an input: ");
-yylex();
-return 0;
+int main() {
+    printf("Enter input:\n");
+    yylex();
+    return 0;
 }
 
+int yywrap() {
+    return 1;
+}
